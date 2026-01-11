@@ -1,0 +1,19 @@
+{
+  "name": "canvas-3d",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "concurrently \"tsc --watch\" \"cpx 'src/*.html' dist -w\" \"cpx 'src/*.css' dist -w\" \"live-server dist\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "concurrently": "^9.2.1",
+    "cpx": "^1.5.0",
+    "live-server": "^1.2.2",
+    "typescript": "^5.9.3"
+  }
+}
