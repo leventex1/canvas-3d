@@ -1,3 +1,5 @@
+import { calcPerspectiveProjection, convertSceneToScreen, drawPoint, type Context, type Point } from "./renderer.js"
+
 console.log("Hello Canvas3D!")
 
 interface AppPoint {
@@ -61,11 +63,23 @@ let towerStack: Array<AppRect> = [
     { loc: { x: WIDTH / 2, y: HEIGHT / 2 }, width: RSIZE, height: RSIZE },
 ]
 
+const context: Context = {
+    screenSpaceMin: { x: 0, y: 0, z: 0 },
+    screenSpaceMax: { x: WIDTH, y: HEIGHT, z: 0 },
+    sceneSpaceMin: { x: -1, y: 1, z: 0 },
+    sceneSpaceMax: { x: 1, y: -1, z: 0 },
+}
+
+const scenePoint: Point = { x: 0.5, y: 0, z: 2 }
+const perspectivePoint: Point = calcPerspectiveProjection(scenePoint)
+const screenPoint = convertSceneToScreen(context, perspectivePoint)
+
 function render() {
     context2D.fillStyle = BACKGROUND
     context2D.fillRect(0, 0, appCanvas.width, appCanvas.height)
 
-    for(let i = 0; i < towerStack.length; i++) {
+    drawPoint(context2D, screenPoint)
+/*     for(let i = 0; i < towerStack.length; i++) {
         drawRect(towerStack[i]!)
         if (i + 1 < towerStack.length) {
             const points1 = getRectPoints(towerStack[i]!)
@@ -73,7 +87,7 @@ function render() {
             for(let j = 0; j < 4; j++)
                 drawLine(points1[j]!, points2[j]!)
         }
-    }
+    } */
 }
 
 setInterval(render, 1000 / FPS)
