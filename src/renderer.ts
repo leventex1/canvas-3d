@@ -12,6 +12,13 @@ export interface Context {
     sceneSpaceMax: Point    // Max coordinates of the scene bounding box
 }
 
+export const translatePoint = (point: Point, translation: Point): Point => {
+    return {
+        x: point.x + translation.x,
+        y: point.y + translation.y,
+        z: point.z + translation.z
+    }
+}
 
 export const calcPerspectiveProjection = (point: Point): Point => {
     return {
@@ -42,6 +49,7 @@ export interface DrawStyle {
     strokeColor: string
     fillColor: string
 }
+
 export const drawPoint = (
     renderContext: CanvasRenderingContext2D,
     point: Point,
@@ -59,4 +67,18 @@ export const drawPoint = (
     )
     renderContext.stroke()
     renderContext.fill()
+}
+
+export const drawLine = (
+    renderContext: CanvasRenderingContext2D,
+    p1: Point,
+    p2: Point,
+    drawStyle: DrawStyle = { size: 2, strokeColor: "green", fillColor: "green" }
+): void => {
+    renderContext.beginPath()
+    renderContext.strokeStyle = drawStyle.strokeColor
+    renderContext.lineWidth = drawStyle.size
+    renderContext.moveTo(p1.x, p1.y)
+    renderContext.lineTo(p2.x, p2.y)
+    renderContext.stroke()
 }
