@@ -1,4 +1,4 @@
-import { calcPerspectiveProjection, convertSceneToScreen, drawLine, drawPoint, translatePoint, type Context, type Point } from "./renderer.js"
+import { calcPerspectiveProjection, convertSceneToScreen, convertScreenToScene, drawLine, drawPoint, translatePoint, type Context, type Point } from "./renderer.js"
 
 console.log("Hello Canvas3D!")
 
@@ -16,9 +16,9 @@ let BACKGROUND = "rgb(25, 25, 25)"
 const aspectRatio = WIDTH / HEIGHT
 const context: Context = {
     screenSpaceMin: { x: 0, y: 0, z: 0 },
-    screenSpaceMax: { x: WIDTH, y: HEIGHT, z: 0 },
+    screenSpaceMax: { x: WIDTH, y: HEIGHT, z: 1 },
     sceneSpaceMin: { x: -1 * aspectRatio, y: 1, z: 0 },
-    sceneSpaceMax: { x: 1 * aspectRatio, y: -1, z: 0 },
+    sceneSpaceMax: { x: 1 * aspectRatio, y: -1, z: 1 },
 }
 
 let vertices: Array<Point> = [
@@ -32,7 +32,8 @@ let vertices: Array<Point> = [
     { x: +0.25, y: +0.25, z: +0.25 },
     { x: +0.25, y: -0.25, z: +0.25 },
 ]
-const translation = { x: 0, y: 0, z: 1 }
+let translation = { x: 0, y: 0, z: 1 }
+let translationTop = { x: 0, y: 0, z: 1 }
 const lineIndices: Array<[number, number]> = [
     [0, 1],
     [1, 2],
@@ -67,10 +68,19 @@ function render() {
     }
 
     for (const [i, j] of lineIndices) {
-        const screenPoint1 = convertSceneToScreen(context, calcPerspectiveProjection(translatePoint(vertices[i]!, translation)))
-        const screenPoint2 = convertSceneToScreen(context, calcPerspectiveProjection(translatePoint(vertices[j]!, translation)))
+        const pointI = translatePoint(vertices[i]!, i >= 4 ? translation : translationTop)
+        const pointJ = translatePoint(vertices[j]!, j >= 4 ? translation : translationTop)
+        const screenPoint1 = convertSceneToScreen(context, calcPerspectiveProjection(pointI))
+        const screenPoint2 = convertSceneToScreen(context, calcPerspectiveProjection(pointJ))
         drawLine(context2D, screenPoint1, screenPoint2)
     }
 }
 
+function onMouseMove(event: MouseEvent) {
+    const scenePoint = convertScreenToScene(context, { x: event.clientX, y: event.clientY, z: 0 })
+    translationTop.x = scenePoint.x * 0.1
+    translationTop.y = scenePoint.y * 0.1
+}
+
 setInterval(render, timeout)
+window.onmousemove = onMouseMove

@@ -39,7 +39,22 @@ export const convertSceneToScreen = (context: Context, point: Point): Point => {
     return {
         x: context.screenSpaceMin.x + (point.x - context.sceneSpaceMin.x) / sceneWidth * screenWidth,
         y: context.screenSpaceMin.y + (point.y - context.sceneSpaceMin.y) / sceneHeight * screenHeight,
-        z: context.screenSpaceMin.x + (point.z - context.sceneSpaceMin.z) / sceneDepth * screenDepth,
+        z: context.screenSpaceMin.z + (point.z - context.sceneSpaceMin.z) / sceneDepth * screenDepth,
+    }
+}
+
+export const convertScreenToScene = (context: Context, point: Point): Point => {
+    const screenWidth = context.screenSpaceMax.x - context.screenSpaceMin.x
+    const screenHeight = context.screenSpaceMax.y - context.screenSpaceMin.y
+    const screenDepth = context.screenSpaceMax.z - context.screenSpaceMin.z
+    const sceneWidth = context.sceneSpaceMax.x - context.sceneSpaceMin.x
+    const sceneHeight = context.sceneSpaceMax.y - context.sceneSpaceMin.y
+    const sceneDepth = context.sceneSpaceMax.z - context.sceneSpaceMin.z
+
+    return {
+        x: context.sceneSpaceMin.x + (point.x - context.screenSpaceMin.x) / screenWidth * sceneWidth,
+        y: context.sceneSpaceMin.y + (point.y - context.screenSpaceMin.y) / screenHeight * sceneHeight,
+        z: context.sceneSpaceMin.z + (point.z - context.screenSpaceMin.z) / screenDepth * sceneDepth,
     }
 }
 

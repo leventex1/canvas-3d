@@ -5,6 +5,17 @@
     <link rel="stylesheet" href="main.css">
 </head>
 <body>
+<!--     <button id="start">Start</button>
+    <video id="v" width="640" height="480" playsinline></video>
+
+    <script>
+        const v = document.getElementById("v");
+        document.getElementById("start").onclick = async () => {
+        const s = await navigator.mediaDevices.getUserMedia({ video: true });
+        v.srcObject = s;
+        await v.play();
+        };
+    </script> -->
     <canvas id="app-canvas"></canvas>
     <script type="module" src="main.js"></script>
 </body>
