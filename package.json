@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
-    "dev": "concurrently \"tsc --watch\" \"cpx 'src/*.html' dist -w\" \"cpx 'src/*.css' dist -w\" \"live-server dist\""
+    "dev": "sh dev.sh"
   },
   "keywords": [],
   "author": "",
@@ -15,5 +15,8 @@
     "cpx": "^1.5.0",
     "live-server": "^1.2.2",
     "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "face-api.js": "^0.22.2"
   }
 }
